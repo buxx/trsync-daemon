@@ -22,7 +22,7 @@ impl ReloadWatcher {
             // For now, simulate reload each 10s
             loop {
                 thread::sleep(Duration::from_secs(10));
-                match sender.send(DaemonMessage::ReloadFromConfig(Config::new())) {
+                match sender.send(DaemonMessage::ReloadFromConfig(Config::from_env())) {
                     Err(error) => {
                         log::error!("Channel was closed when try to send message, close thread");
                         break;
