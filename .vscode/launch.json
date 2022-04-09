@@ -5,12 +5,41 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "trsync-desktop",
-            "type": "python",
+            "type": "lldb",
             "request": "launch",
-            "program": "venv3.8/bin/trsync-desktop",
-            "console": "integratedTerminal",
-            "justMyCode": false
+            "name": "Debug executable 'trsync-manager'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=trsync-manager",
+                    "--package=trsync-manager"
+                ],
+                "filter": {
+                    "name": "trsync-manager",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'trsync-manager'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=trsync-manager",
+                    "--package=trsync-manager"
+                ],
+                "filter": {
+                    "name": "trsync-manager",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
