@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use ini::Ini;
 
-use crate::{error::Error, model::Instance};
+use crate::{error::Error, model::Instance, security::get_password};
 
 #[derive(Debug, Clone)]
 pub struct Config {
@@ -101,14 +101,28 @@ impl Config {
                 None => false,
             };
             let mut workspaces_ids = vec![];
-            let workspace_ids_raw = match config_ini.get_from(Some(&section_name), "workspace_ids")
+            let workspace_ids_raw = match config_ini.get_from(Some(&section_name), "workspaces_ids")
             {
                 Some(value) => value,
                 None => {
                     return Err(Error::ReadConfigError(format!(
-                        "Unable to read workspace_ids config from {} section",
+                        "Unable to read workspaces_ids config from {} section",
                         &section_name
                     )))
+                }
+            };
+            let password = match get_password(&address, &username) {
+                Ok(password) => password,
+                Err(_) => {
+                    log::error!("Experimental feature : read password from config file instead use keyring service");
+                    config_ini
+                        .get_from(Some(&section_name), "password")
+                        .unwrap()
+                        .to_string()
+                    // return Err(Error::ReadConfigError(format!(
+                    //     "Unable to get password from keyring for instance {} (trsync::{},{}) and username {} : {}",
+                    //     &instance_name, address, username, username, error
+                    // )))
                 }
             };
             for workspace_id_raw in workspace_ids_raw
@@ -124,7 +138,7 @@ impl Config {
                             &section_name
                         )))
                     }
-                }
+                };
             }
 
             instances.push(Instance {
@@ -132,8 +146,7 @@ impl Config {
                 address,
                 unsecure,
                 username,
-                // FIXME BS NOW ...
-                password: "TOTO".to_string(),
+                password,
                 workspaces_ids,
             })
         }
