@@ -2,6 +2,7 @@ use env_logger::Env;
 
 use crate::config::Config;
 
+mod client;
 mod config;
 mod daemon;
 mod error;

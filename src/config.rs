@@ -6,9 +6,9 @@ use crate::{error::Error, model::Instance, security::get_password};
 
 #[derive(Debug, Clone)]
 pub struct Config {
-    listen_timeout: Duration,
-    local_folder: String,
-    instances: Vec<Instance>,
+    pub listen_timeout: Duration,
+    pub local_folder: String,
+    pub instances: Vec<Instance>,
 }
 impl Config {
     pub fn from_env() -> Result<Self, Error> {

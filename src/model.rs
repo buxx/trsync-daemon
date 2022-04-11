@@ -1,3 +1,5 @@
+use serde_derive::{Deserialize, Serialize};
+
 #[derive(Debug, Clone)]
 pub struct Instance {
     pub name: String,
@@ -8,8 +10,16 @@ pub struct Instance {
     pub workspaces_ids: Vec<u32>,
 }
 
-#[derive(Debug, Clone)]
+impl Instance {
+    pub fn url(&self, suffix: Option<&str>) -> String {
+        let suffix = suffix.unwrap_or("");
+        let scheme = if self.unsecure { "http" } else { "https" };
+        format!("{}://{}/api{}", scheme, self.address, suffix)
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Workspace {
-    pub name: String,
-    pub id: u32,
+    pub label: String,
+    pub workspace_id: u32,
 }
