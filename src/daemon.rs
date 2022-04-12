@@ -42,6 +42,9 @@ impl Daemon {
         let processes_to_start = self.get_processes_to_start();
         let processes_to_stop = self.get_processes_to_stop();
 
+        log::info!("'{}' process to start", processes_to_start.len());
+        log::info!("'{}' process to stop", processes_to_stop.len());
+
         for process_to_stop in processes_to_stop {
             self.stop_process(process_to_stop)?;
         }
@@ -132,6 +135,7 @@ impl Daemon {
                 .arg("--env-var-pass")
                 .arg("PASSWORD")
                 .env("PASSWORD", &instance.password)
+                // FIXME : output to file ?
                 .spawn()
             {
                 // FIXME details (specific error to spawn, stop ...)
