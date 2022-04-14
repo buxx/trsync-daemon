@@ -120,13 +120,15 @@ impl Daemon {
                     return Err(Error::FailToSpawnTrsyncProcess);
                 }
             };
-        let folder_path = Path::new(&self.config.local_folder).join(workspace.label);
+        let folder_path = Path::new(&self.config.local_folder)
+            .join(&instance.address)
+            .join(workspace.label);
 
         let child = if cfg!(target_os = "windows") {
             todo!()
         } else {
             // FIXME BS NOW : bin path ?
-            match Command::new("/home/bastiensevajol/Projets/trsync/target/debug/trsync")
+            match Command::new(&self.config.trsync_bin_path)
                 .arg(folder_path)
                 .arg(&instance.address)
                 // FIXME BS NOW : add unsecure option

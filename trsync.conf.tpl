@@ -1,4 +1,5 @@
 [server]
+trsync_bin_path = "/usr/local/bin/trsync"
 listen_timeout = 60
 instances = algoo,bux
 local_folder = ~/Tracim

@@ -22,6 +22,7 @@ impl ReloadWatcher {
             // For now, simulate reload each 10s
             loop {
                 thread::sleep(Duration::from_secs(10));
+                continue;
                 let config = match Config::from_env() {
                     Ok(config_) => config_,
                     Err(error) => {
