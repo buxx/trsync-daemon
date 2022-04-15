@@ -121,20 +121,25 @@ impl Config {
                     )))
                 }
             };
-            let password = match get_password(&address, &username) {
-                Ok(password) => password,
-                Err(_) => {
-                    log::error!("Experimental feature : read password from config file instead use keyring service");
-                    config_ini
-                        .get_from(Some(&section_name), "password")
-                        .unwrap()
-                        .to_string()
-                    // return Err(Error::ReadConfigError(format!(
-                    //     "Unable to get password from keyring for instance {} (trsync::{},{}) and username {} : {}",
-                    //     &instance_name, address, username, username, error
-                    // )))
-                }
-            };
+            // FIXME : password asked with debian 11
+            // let password = match get_password(&address, &username) {
+            //     Ok(password) => password,
+            //     Err(_) => {
+            //         log::error!("Experimental feature : read password from config file instead use keyring service");
+            //         config_ini
+            //             .get_from(Some(&section_name), "password")
+            //             .unwrap()
+            //             .to_string()
+            //         // return Err(Error::ReadConfigError(format!(
+            //         //     "Unable to get password from keyring for instance {} (trsync::{},{}) and username {} : {}",
+            //         //     &instance_name, address, username, username, error
+            //         // )))
+            //     }
+            // };
+            let password = config_ini
+                .get_from(Some(&section_name), "password")
+                .unwrap()
+                .to_string();
             for workspace_id_raw in workspace_ids_raw
                 .split(",")
                 .map(|v| v.trim().to_string())
