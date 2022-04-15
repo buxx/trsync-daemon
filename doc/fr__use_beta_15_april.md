@@ -1,7 +1,7 @@
 ## Linux
 
 1. Télécharger trsync : https://tracim.bux.fr/ui/guest-download/235932d2-6e9f-4786-b736-c09fdb8ffdf1
-2. Télécharger trsync-manager : https://tracim.bux.fr/ui/guest-download/26aa1eec-6077-424a-9e8f-2ddc827a8268
+2. Télécharger trsync-manager : https://tracim.bux.fr/ui/guest-download/14b201e6-819a-4a1f-b258-d0d4cb34a7fc
 3. Décompresser les deux binaires à un emplacement, par exemple `/home/votre_nom_dutilisateur/.bin/`
 4. Créer un fichier à l'emplacement `/home/votre_nom_dutilisateur/.trsync.conf` contenant par exemple :
 ```
