@@ -1,4 +1,4 @@
-use std::sync::mpsc::RecvError;
+use std::{io, sync::mpsc::RecvError};
 
 #[derive(Debug)]
 pub enum Error {
@@ -6,6 +6,7 @@ pub enum Error {
     UnableToFindHomeUser,
     ReadConfigError(String),
     FailToSpawnTrsyncProcess,
+    UnexpectedError(String),
 }
 
 impl From<RecvError> for Error {
@@ -19,11 +20,22 @@ pub enum ClientError {
     RequestError(String),
     Unauthorized,
     UnexpectedResponse(String),
-    NotFoundResponse(String),
 }
 
 impl From<reqwest::Error> for ClientError {
     fn from(error: reqwest::Error) -> Self {
         Self::RequestError(format!("Error happen when make request : {:?}", error))
+    }
+}
+
+impl From<notify::Error> for Error {
+    fn from(error: notify::Error) -> Self {
+        Error::UnexpectedError(format!("Notify error {:?}", error))
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(error: io::Error) -> Self {
+        Error::UnexpectedError(format!("{:?}", error))
     }
 }

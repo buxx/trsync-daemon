@@ -19,6 +19,7 @@ fn main() -> Result<(), error::Error> {
     let reload_channel = reload::ReloadWatcher::new(config.clone()).watch()?;
 
     log::info!("Start daemon");
+    // FIXME : si erreur la pas de print :(
     daemon::Daemon::new(config).run(reload_channel)?;
 
     log::info!("Daemon finished, exit");
