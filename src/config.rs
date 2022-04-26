@@ -140,12 +140,13 @@ impl Config {
                 .get_from(Some(&section_name), "password")
                 .unwrap()
                 .to_string();
-            for workspace_id_raw in workspace_ids_raw
-                .split(",")
-                .map(|v| v.trim().to_string())
-                .collect::<Vec<String>>()
-            {
-                match workspace_id_raw.parse::<u32>() {
+            if workspace_ids_raw.trim() != "" {
+                for workspace_id_raw in workspace_ids_raw
+                    .split(",")
+                    .map(|v| v.trim().to_string())
+                    .collect::<Vec<String>>()
+                {
+                    match workspace_id_raw.parse::<u32>() {
                     Ok(workspace_id) => workspaces_ids.push(workspace_id),
                     Err(_) => {
                         return Err(Error::ReadConfigError(format!(
@@ -154,6 +155,7 @@ impl Config {
                         )))
                     }
                 };
+                }
             }
 
             instances.push(Instance {
