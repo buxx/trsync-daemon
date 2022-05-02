@@ -20,7 +20,7 @@ impl Config {
         let config_file_path = if cfg!(target_os = "windows") {
             user_home_folder_path
                 .join("AppData")
-                .join("trsync")
+                .join("Local")
                 .join("trsync.conf")
         } else {
             user_home_folder_path.join(".trsync.conf")
