@@ -125,7 +125,27 @@ impl Daemon {
             .join(workspace.label);
 
         let child = if cfg!(target_os = "windows") {
-            todo!()
+            let sub_command = [
+                &self.config.trsync_bin_path,
+                &folder_path.to_str().unwrap().to_string(),
+                &instance.address,
+                &format!("{}", workspace.workspace_id),
+                &instance.username,
+                "--env-var-pass",
+                "PASSWORD",
+            ]
+            .join(" ");
+            match Command::new("cmd")
+                .arg("/c")
+                .arg(sub_command)
+                .env("PASSWORD", &instance.password)
+                // FIXME : output to file ?
+                .spawn()
+            {
+                // FIXME details (specific error to spawn, stop ...)
+                Err(_) => return Err(Error::FailToSpawnTrsyncProcess),
+                Ok(child) => child,
+            }
         } else {
             // FIXME BS NOW : bin path ?
             match Command::new(&self.config.trsync_bin_path)

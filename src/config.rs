@@ -85,6 +85,9 @@ impl Config {
             .map(|v| v.trim().to_string())
             .collect::<Vec<String>>()
         {
+            if instance_name.trim().is_empty() {
+                continue;
+            }
             let section_name = format!("instance.{}", instance_name);
             let address = match config_ini.get_from(Some(&section_name), "address") {
                 Some(value) => value,
