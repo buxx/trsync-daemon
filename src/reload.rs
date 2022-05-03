@@ -28,12 +28,16 @@ impl ReloadWatcher {
         let tracked_file_path = if cfg!(target_os = "windows") {
             user_home_folder_path
                 .join("AppData")
-                .join("trsync")
+                .join("Local")
                 .join("trsync.conf.track")
         } else {
             user_home_folder_path.join(".trsync.conf.track")
         };
 
+        log::info!(
+            "Track config file changes with {}",
+            tracked_file_path.display()
+        );
         {
             // Ensure tracked file exist
             OpenOptions::new()
@@ -41,7 +45,6 @@ impl ReloadWatcher {
                 .create(true)
                 .open(&tracked_file_path)?;
         }
-
         let (inotify_sender, inotify_receiver) = channel();
 
         thread::spawn(move || {
